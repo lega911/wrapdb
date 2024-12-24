@@ -2,8 +2,20 @@
   "name": "wrapdb",
   "version": "1.0.0",
   "description": "Simple wrapper for IndexedDB",
-  "main": "index.js",
   "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./*": "./src/"
+  },
   "author": "Oleg Nechaev <lega911@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "^4.29.1",
+    "uglify-js": "^3.19.3"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "minify": "uglifyjs dist/wrapdb.mjs -c -m -o dist/wrapdb.min.mjs; uglifyjs dist/wrapdb.umd.js -c -m -o dist/wrapdb.umd.min.js"
+  }
 }

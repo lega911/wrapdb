@@ -1,12 +1,8 @@
 
-import { open } from 'wrapdb.js';
-
-debugger;
+import * as db from 'wrapdb';
 
 async function main() {
-  const db = open();
-
-  await db.set('test', 'Ubuntu 20.04 LTS');
+  await db.set('key', 'value');
 
   let value = await db.get('key');
   console.log('Result', value);
