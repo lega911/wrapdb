@@ -1,0 +1,9 @@
+{
+  "name": "wrapdb",
+  "version": "1.0.0",
+  "description": "Simple wrapper for IndexedDB",
+  "main": "index.js",
+  "type": "module",
+  "author": "Oleg Nechaev <lega911@gmail.com>",
+  "license": "MIT"
+}
