@@ -2,16 +2,9 @@
 function open(dbName = 'default', storeName = 'default') {
   return new Promise((resolve, reject) => {
     let request = indexedDB.open(dbName, 1);
-
-    request.onerror = function () {
-      reject();
-    };
-
-    request.onupgradeneeded = function (e) {
-      e.target.result.createObjectStore(storeName);
-    };
-
-    request.onsuccess = function () {
+    request.onerror = () => reject();
+    request.onupgradeneeded = (e) => e.target.result.createObjectStore(storeName);
+    request.onsuccess = () => {
       let db = request.result;
       db.__store = storeName;
       resolve(db);
@@ -19,27 +12,25 @@ function open(dbName = 'default', storeName = 'default') {
   });
 };
 
-
 function set(db, key, value) {
-  return runStore(db, (objectStore) => objectStore.put(value, key));
+  return operateStore(db, (objectStore) => objectStore.put(value, key));
 };
 
 function get(db, key) {
-  return runStore(db, (objectStore) => objectStore.get(key), 1);
+  return operateStore(db, (objectStore) => objectStore.get(key), 1);
 };
 
 function delete_(db, key) {
-  return runStore(db, (objectStore) => objectStore.delete(key));
+  return operateStore(db, (objectStore) => objectStore.delete(key));
 };
 
 function clear(db) {
-  return runStore(db, (objectStore) => objectStore.clear());
+  return operateStore(db, (objectStore) => objectStore.clear());
 };
 
-export {open, set, get, clear, delete_ as delete};
+export { open, set, get, clear, delete_ as delete };
 
-
-function runStore(db, operation, getResult) {
+function operateStore(db, operation, getResult) {
   return new Promise(async (resolve, reject) => {
     let osReq, tx, step = 0;
     const done = (success) => {
@@ -53,35 +44,19 @@ function runStore(db, operation, getResult) {
       } else {
         step = -1;
         reject();
+        tx.abort();
       }
     };
 
     tx = db.transaction(db.__store, 'readwrite');
+    tx.oncomplete = () => done(1);
+    tx.onerror = () => done(0);
 
-    tx.oncomplete = function () {
-      done(true);
-    };
-
-    tx.onerror = function () {
-      done(false);
-      reject();
-      tx.abort();
-    };
-
-    let objectStore = tx.objectStore(db.__store);
-
-    osReq = operation(objectStore);
-
-    osReq.onsuccess = function () {
-      done(true);
-    }
-    osReq.onerror = function () {
-      done(false);
-      tx.abort();
-      reject();
-    };
+    osReq = operation(tx.objectStore(db.__store));
+    osReq.onsuccess = () => done(1);
+    osReq.onerror = () => done(0);
 
     tx.commit();
-    done(true);
+    done(1);
   });
 };

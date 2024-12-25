@@ -2,7 +2,7 @@
 ### Info
 
 A compact JS wrapper for IndexedDB with API similar to localStorage.\
-Bundle size **390b+** (minfied + compressed), treeshaking is supported.
+Bundle size **370b+** (minfied + compressed), treeshaking is supported.
 
 
 ### Example
