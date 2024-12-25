@@ -3,20 +3,12 @@ import * as core from './core.js'
 
 let db = core.open();
 
-async function set(key, value) {
-  return core.set(await db, key, value);
-};
+const set = async (key, value) => core.set(await db, key, value);
+const get = async (key) => core.get(await db, key);
+const delete_ = async (key) => core.delete(await db, key);
+const clear = async () => core.clear(await db);
+const count = async () => core.count(await db);
+const getAllKeys = async () => core.getAllKeys(await db);
+const getAll = async () => core.getAll(await db);
 
-async function get(key) {
-  return core.get(await db, key);
-};
-
-async function delete_(key) {
-  return core.delete(await db, key);
-};
-
-async function clear() {
-  return core.clear(await db);
-};
-
-export {set, get, clear, delete_ as delete};
+export { set, get, clear, delete_ as delete, count, getAllKeys, getAll };

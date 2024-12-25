@@ -2,7 +2,7 @@
 ### Info
 
 A compact JS wrapper for IndexedDB with API similar to localStorage.\
-Bundle size **370b+** (minfied + compressed), treeshaking is supported.
+Bundle size **340b+** (minfied + compressed), treeshaking is supported.
 
 
 ### Example
@@ -22,9 +22,12 @@ let value = await db.get('key');
 * db.get(key)
 * db.delete(key)
 * db.clear()
+* db.count()
+* db.getAll()
+* db.getAllKeys()
 
 
-### Custom DB
+### Custom DB connection
 
 ```js
 import * as core from 'wrapdb/core';

@@ -12,23 +12,15 @@ function open(dbName = 'default', storeName = 'default') {
   });
 };
 
-function set(db, key, value) {
-  return operateStore(db, (objectStore) => objectStore.put(value, key));
-};
+const set = (db, key, value) => operateStore(db, (objectStore) => objectStore.put(value, key));
+const get = (db, key) => operateStore(db, (objectStore) => objectStore.get(key), 1);
+const delete_ = (db, key) => operateStore(db, (objectStore) => objectStore.delete(key));
+const clear = (db) => operateStore(db, (objectStore) => objectStore.clear());
+const count = (db) => operateStore(db, (objectStore) => objectStore.count(), 1);
+const getAllKeys = (db) => operateStore(db, (objectStore) => objectStore.getAllKeys(), 1);
+const getAll = (db) => operateStore(db, (objectStore) => objectStore.getAll(), 1);
 
-function get(db, key) {
-  return operateStore(db, (objectStore) => objectStore.get(key), 1);
-};
-
-function delete_(db, key) {
-  return operateStore(db, (objectStore) => objectStore.delete(key));
-};
-
-function clear(db) {
-  return operateStore(db, (objectStore) => objectStore.clear());
-};
-
-export { open, set, get, clear, delete_ as delete };
+export { open, set, get, clear, delete_ as delete, count, getAllKeys, getAll };
 
 function operateStore(db, operation, getResult) {
   return new Promise(async (resolve, reject) => {

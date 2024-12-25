@@ -5,3 +5,4 @@ package-lock.json
 example/bundle.*
 example/do
 /dist/wrapdb.min.mjs.br
+/dist
